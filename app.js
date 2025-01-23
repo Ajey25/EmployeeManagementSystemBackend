@@ -5,12 +5,14 @@ import dotenv from "dotenv";
 
 import employeeRoutes from "./routes/employeeRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import path from "path";
 
 dotenv.config();
 
 const app = express();
 
 // Middleware
+app.use(express.static(path.resolve("dist")));
 app.use(cors());
 app.use(express.json());
 
@@ -24,6 +26,7 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error(err));
 
+app.get("*", (req, res) => res.sendFile(path.resolve("dist", "index.html")));
 // Server setup
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
